@@ -163,6 +163,30 @@ function GetVehicleDoorStatus(InVeh)
         ["5"] = IsVehicleDoorDamaged(InVeh, 5)
     }
 end
+function GetVehicleProperties(veh)
+    local vehProps = {
+        plate = GetVehicleNumberPlateText(veh),
+        mods = {} 
+    }
+
+    for i = 0, 49 do
+        vehProps.mods[i] = GetVehicleMod(veh, i)
+    end
+    
+    return vehProps
+end
+
+function SetVehicleProperties(veh, props)
+    SetVehicleNumberPlateText(veh, props.plate)
+    for i = 0, 49 do
+        SetVehicleMod(veh, i, props.mods[i])
+    end
+end
+RegisterNetEvent('saveVehicleMods')
+AddEventHandler('saveVehicleMods', function(veh)
+    local vehProps = GetVehicleProperties(veh)
+    TriggerServerEvent('saveVehicleModsToDB', vehProps)
+end)
 
 function GetVehicleTyreStatus(InVeh, burstType)
     return {
@@ -233,6 +257,14 @@ RegisterNUICallback('VehicleInfo', function(data, cb)
         Traction = traction,
         Acceleration = acceleration
     })
+end)
+RegisterNetEvent('applyVehicleMods')
+AddEventHandler('applyVehicleMods', function(veh, plate)
+    Framework.Functions.TriggerCallback('getVehicleModsFromDB', function(vehProps)
+        if vehProps then
+            SetVehicleProperties(veh, vehProps)
+        end
+    end, plate)
 end)
 
 RegisterNUICallback('SpawnVehicle', function(data)
