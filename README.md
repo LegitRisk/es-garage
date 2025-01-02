@@ -21,6 +21,7 @@ Join our Discord community for real-time support and regular updates:
 [![Discord](https://img.shields.io/badge/Discord-ES%20Community-7289DA.svg)](https://discord.gg/EkwWvFS)
 
 ## Contributors
+- **Brave Development**
 - **Raider#0101**
 
 You can check out the YouTube video tutorial and showcase of the script by clicking the link below:
